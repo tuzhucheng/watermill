@@ -35,7 +35,7 @@ def run_model(cmd_args, experiment_group='adhoc', train_metric_extractor=dummy_e
 
     stdout_log_name, stderr_log_name = f'{request_id}-stdout.log', f'{request_id}-stderr.log'
     stdout_log, stderr_log = f'log/{stdout_log_name}', f'log/{stderr_log_name}'
-    print('Processing request', request_id)
+    print(f'Processing request {request_id} (experiment group {expt_group_id})')
     stdout_fh, stderr_fh = open(stdout_log, 'w'), open(stderr_log, 'w')
 
     start_time = str(datetime.datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d %H:%M:%S'))

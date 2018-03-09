@@ -4,6 +4,7 @@ __pycache__
 .DS_STORE
 .idea/
 log/
+config.ini
 dump.rdb
 watermill.db
 watermill.db-journal

@@ -1,7 +1,15 @@
 # watermill
 Automated machine learning experimentation workflow on GPU
 
-# Starting workers
+## Setup
+
+Create a `config.ini` file with your own settings.
+```
+[DEFAULT]
+json1 = /u/z3tu/projects/watermill/json1
+```
+
+## Starting workers
 
 This starts two workers, each can process 2 tasks at once.
 ```
@@ -9,7 +17,7 @@ celery -A task_queue worker --loglevel=INFO --concurrency=2 -n worker1 -Q gpu0
 celery -A task_queue worker --loglevel=INFO --concurrency=2 -n worker2 -Q gpu1
 ```
 
-# Querying
+## Querying
 
 One can query using the SQLite shell:
 ```sql

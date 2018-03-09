@@ -51,7 +51,7 @@ def command_line_args_to_json(cmd_args):
                 d[arg_name] = _parse_arg_val(arg_val)
                 arg_val = []
 
-            arg_name = cmd_args[i].lstrip('-')
+            arg_name = cmd_args[i].lstrip('-').replace('-', '_')
         else:
             arg_val.append(cmd_args[i])
 

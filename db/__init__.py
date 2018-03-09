@@ -16,6 +16,7 @@ def delete_experiment_row(stdout_fn, stderr_fn):
 conn.create_function('delete_experiment_row', 2, delete_experiment_row)
 
 c = conn.cursor()
+c.execute('PRAGMA foreign_keys=on')
 
 # Create tables if this is the first time
 res = c.execute("SELECT name from sqlite_master where type='table' and name='experiment_groups'")
@@ -25,8 +26,9 @@ if res.fetchone() is None:
 
     c.execute('''CREATE TABLE experiments(group_id integer, args text, stdout text, stderr text, status_code int,
                   start_time text, end_time text, train_metric text, dev_metric text, test_metric text,
-                  FOREIGN KEY(group_id) REFERENCES experiment_groups(rowid))''')
+                  FOREIGN KEY(group_id) REFERENCES experiment_groups(rowid)) ON DELETE CASCADE''')
 
     c.execute('''CREATE TRIGGER del_logs AFTER DELETE ON experiments
                   FOR EACH ROW BEGIN SELECT delete_experiment_row(OLD.stdout, OLD.stderr); END''')
-    conn.commit()
+
+conn.commit()

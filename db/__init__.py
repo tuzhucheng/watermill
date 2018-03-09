@@ -22,6 +22,7 @@ if res.fetchone() is None:
     c.execute('''INSERT INTO experiment_groups(name, description) VALUES ('adhoc', 'ad-hoc experiment group')''')
 
     c.execute('''CREATE TABLE experiments(group_id integer, args text, stdout text, stderr text, status_code int,
+                  start_time text, end_time text,
                   FOREIGN KEY(group_id) REFERENCES experiment_groups(rowid))''')
 
     c.execute('''CREATE TRIGGER del_logs AFTER DELETE ON experiments

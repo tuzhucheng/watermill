@@ -1,7 +1,7 @@
 import os
 import sqlite3
 
-conn = sqlite3.connect('watermill.db')
+conn = sqlite3.connect('watermill.db', check_same_thread=False)
 conn.enable_load_extension(True)
 conn.load_extension('./json1')
 

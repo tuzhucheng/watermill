@@ -14,7 +14,7 @@ def create_experiment_group(name, description):
 def list_experiment_groups():
     cursor = conn.cursor()
     for row in cursor.execute('SELECT * from experiment_groups'):
-        print('\t'.join(row))
+        print('\t'.join(map(str, row)))
     cursor.close()
 
 
@@ -60,14 +60,12 @@ def delete_experiment(criteria):
     cursor = conn.cursor()
     cursor.execute(f'DELETE FROM experiments WHERE {criteria}')
     conn.commit()
-    cursor.close()
 
 
 def delete_experiment_group(name):
     cursor = conn.cursor()
     cursor.execute('DELETE FROM experiment_groups WHERE name=?', (name,))
     conn.commit()
-    cursor.close()
 
 
 if __name__ == '__main__':

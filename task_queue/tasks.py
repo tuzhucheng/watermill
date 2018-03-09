@@ -28,7 +28,7 @@ def run_model(cmd_args, experiment_group='adhoc'):
 
     args_json = command_line_args_to_json(cmd_args)
     cursor.execute('INSERT INTO experiments(group_id, args, stdout, stderr, status_code) VALUES (?, ?, ?, ?, ?)',
-                   (expt_group_id, args_json, stderr_log_name, stderr_log_name, completed.returncode))
+                   (expt_group_id, args_json, stdout_log_name, stderr_log_name, completed.returncode))
     conn.commit()
 
     return {

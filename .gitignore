@@ -5,3 +5,5 @@ __pycache__
 .idea/
 log/
 dump.rdb
+watermill.db
+watermill.db-journal

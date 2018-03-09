@@ -1,5 +1,6 @@
 import task_queue.tasks as tasks
 
 
-def submit_run_model_task(python, driver, cmd_args, description=''):
-    tasks.run_model.delay(python, driver, cmd_args)
+def submit_run_model_task(cmd_args):
+    async_res = tasks.run_model.delay(cmd_args)
+    return async_res

@@ -7,3 +7,8 @@ log/
 dump.rdb
 watermill.db
 watermill.db-journal
+
+*.dSYM
+sqlite-src-3140100.zip
+sqlite-src-3140100/
+json1

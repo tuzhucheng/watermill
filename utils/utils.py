@@ -71,15 +71,18 @@ def extractor(fh, pattern):
         if pattern.match(line):
             candidate_lines.append(line)
 
-    line = candidate_lines[-1]
-    match = pattern.match(line)
-    groupdict = match.groupdict()
+    try:
+        line = candidate_lines[-1]
+        match = pattern.match(line)
+        groupdict = match.groupdict()
 
-    for k, v in groupdict.items():
-        try:
-            typed_val = float(v)
-            groupdict[k] = typed_val
-        except ValueError:
-            pass
+        for k, v in groupdict.items():
+            try:
+                typed_val = float(v)
+                groupdict[k] = typed_val
+            except ValueError:
+                pass
 
-    return json.dumps(groupdict)
+        return json.dumps(groupdict)
+    except IndexError as e:
+        return json.dumps({})

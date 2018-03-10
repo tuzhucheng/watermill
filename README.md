@@ -1,6 +1,8 @@
 # watermill
 Automated machine learning experimentation workflow on GPU
 
+This code is currently in alpha. Changes occur quickly and compatibility may break at any time.
+
 ## Setup
 
 Create a `config.ini` file with your own settings.

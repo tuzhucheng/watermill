@@ -1,28 +1,25 @@
 import datetime
 import pathlib
+import re
 import subprocess
 import time
 
 from db import conn
 from task_queue.celery import app
-from utils.utils import command_line_args_to_json
+from utils.utils import command_line_args_to_json, extractor
 
-
-def dummy_extractor(stdout_fh, stderr_fh):
-    return None
 
 
 @app.task
-def run_model(cmd_args, experiment_group='adhoc', train_metric_extractor=dummy_extractor,
-              dev_metric_extractor=dummy_extractor, test_metric_extractor=dummy_extractor):
+def run_model(cmd_args, experiment_group='adhoc', train_extract_def=None, dev_extract_def=None, test_extract_def=None):
     """
     Run model
     :param cmd_args: List of strings (arguments to subprocess.run)
     :param experiment_group: Name of experiment group
-    :param train_metric_extractor: Function that takes file handles for stdout and stderr and returns train metric
-    :param dev_metric_extractor: Function that takes file handles for stdout and stderr and returns dev metric
-    :param test_metric_extractor: Function that takes file handles for stdout and stderr and returns test metric
-    :return: 
+    :param train_extract_def: ('stdout|stderr', regex pattern)
+    :param dev_extract_def: ('stdout|stderr', regex pattern)
+    :param test_extract_def: ('stdout|stderr', regex pattern)
+    :return:
     """
     request_id = run_model.request.id
 
@@ -44,12 +41,17 @@ def run_model(cmd_args, experiment_group='adhoc', train_metric_extractor=dummy_e
     stdout_fh.close()
     stderr_fh.close()
 
-    extractors = (train_metric_extractor, dev_metric_extractor, test_metric_extractor)
+    extract_defs = (train_extract_def, dev_extract_def, test_extract_def)
     splits = ('train', 'dev', 'test')
     metrics = {}
-    for extractor, split in zip(extractors, splits):
-        with open(stdout_log, 'r') as stdout_fh, open(stderr_log, 'r') as stderr_fh:
-            metrics[split] = extractor(stdout_fh, stderr_fh)
+    for extract_def, split in zip(extract_defs, splits):
+        if extract_def is None:
+            metrics['split'] = None
+        else:
+            log_file = stdout_log if extract_def[0] == 'stdout' else stderr_log
+            with open(log_file, 'r') as f:
+                pattern = re.compile(extract_def[1])
+                metrics[split] = extractor(f, pattern)
 
     args_json = command_line_args_to_json(cmd_args)
     cursor.execute('''INSERT INTO experiments(group_id, args, stdout, stderr, status_code, start_time, end_time, train_metric, dev_metric, test_metric)

@@ -1,5 +1,6 @@
 import datetime
 import pathlib
+import json
 import re
 import subprocess
 import time
@@ -61,7 +62,11 @@ def run_model(cmd_args, experiment_group='adhoc', train_extract_def=None, dev_ex
     conn.commit()
 
     return {
+        'args': json.loads(args_json),
         'status_code': completed.returncode,
         'stdout': stdout_log,
-        'stderr': stderr_log
+        'stderr': stderr_log,
+        'train': json.loads(metrics['train']),
+        'dev': json.loads(metrics['dev']),
+        'test': json.loads(metrics['test'])
     }

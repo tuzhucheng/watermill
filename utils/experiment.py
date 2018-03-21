@@ -100,7 +100,7 @@ if __name__ == '__main__':
         delete_experiment(params[0])
     elif action == 'delete_group':
         if len(params) != 1:
-            print('Usage: delete [experiment_group_name]')
+            print('Usage: delete_group [experiment_group_name]')
             sys.exit(1)
 
         delete_experiment_group(params[0])

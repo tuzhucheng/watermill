@@ -47,7 +47,7 @@ def run_model(cmd_args, experiment_group='adhoc', train_extract_def=None, dev_ex
     metrics = {}
     for extract_def, split in zip(extract_defs, splits):
         if extract_def is None:
-            metrics['split'] = None
+            metrics[split] = '{}'
         else:
             log_file = stdout_log if extract_def[0] == 'stdout' else stderr_log
             with open(log_file, 'r') as f:

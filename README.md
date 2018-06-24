@@ -11,6 +11,8 @@ Create a `config.ini` file with your own settings.
 json1 = /u/z3tu/projects/watermill/json1
 ```
 
+To query JSON using the `json1` extension. You can get the extension by running `get_json1.sh` (make you have required headers before installing, i.e. `sudo apt-get install libsqlite3-dev`).
+
 ## Starting workers
 
 This starts two workers, each can process 2 tasks at once.
@@ -23,7 +25,7 @@ celery -A task_queue worker --loglevel=INFO --concurrency=2 -n worker2 -Q gpu1
 
 One can query using the SQLite shell:
 ```sql
-$ sqlite3 watermill.db 
+$ sqlite3 watermill.db
 SQLite version 3.22.0 2018-01-22 18:45:57
 Enter ".help" for usage hints.
 sqlite> .load json1
